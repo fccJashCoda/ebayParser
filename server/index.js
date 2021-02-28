@@ -11,6 +11,13 @@ const { JSDOM } = jsdom;
 app.use(cors());
 app.use(morgan('tiny'));
 
+const cache = {
+  search_term: '',
+  date: 0,
+  body: null,
+  results: null,
+};
+
 function getResults(body) {
   const dom = new JSDOM(body);
   const rows = dom.window.document.querySelectorAll('.s-item__wrapper');
@@ -37,12 +44,6 @@ function getResults(body) {
   return results;
 }
 
-const cache = {
-  date: 0,
-  body: null,
-  results: null,
-};
-
 app.get('/', (req, res) => {
   res.json({ message: 'hello world! 👌' });
 });
@@ -54,9 +55,9 @@ app.get('/search/:search_term', (req, res) => {
 
   const date = new Date().getTime();
 
-  if (cache.body && date - 120000 < cache.date) {
+  if (cache.search_term === search_term && date - 1200 * 1000 < cache.date) {
     console.log('serving cached data');
-    res.json(cache);
+    res.json({ results: cache.results });
   } else {
     console.log('fetching new data');
     fetch(url)
@@ -64,13 +65,13 @@ app.get('/search/:search_term', (req, res) => {
       .then(async (body) => {
         const results = getResults(body);
 
+        cache.search_term = search_term;
         cache.date = date;
         cache.body = body;
         cache.results = results;
 
         res.json({
           results,
-          body,
         });
       });
   }
