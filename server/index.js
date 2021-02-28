@@ -13,17 +13,23 @@ app.use(morgan('tiny'));
 
 function getResults(body) {
   const dom = new JSDOM(body);
-  const rows = dom.window.document.querySelectorAll('.s-item__info');
+  const rows = dom.window.document.querySelectorAll('.s-item__wrapper');
   const results = [];
 
-  console.log(rows);
   rows.forEach((element) => {
     if (element) {
       const title = element
         .querySelector('h3.s-item__title')
         .textContent.slice(11);
+      const price = element.querySelector('.s-item__price').textContent;
+      const link = element.querySelector('.s-item__link').href;
+      const image = element.querySelector('.s-item__image-img').src;
+
       results.push({
         title,
+        price,
+        image,
+        link,
       });
     }
   });
@@ -46,7 +52,6 @@ app.get('/search/:search_term', (req, res) => {
   const { search_term } = req.params;
   const url = `https://www.ebay.com/sch/i.html?_from=R40&_nkw=${search_term}&_sacat=0&LH_TitleDesc=0&_sop=10`;
 
-  // const url = 'https://www.google.com'
   const date = new Date().getTime();
 
   if (cache.body && date - 120000 < cache.date) {
