@@ -31,12 +31,16 @@ function getResults(body) {
       const price = element.querySelector('.s-item__price').textContent;
       const link = element.querySelector('.s-item__link').href;
       const image = element.querySelector('.s-item__image-img').src;
+      const location = element
+        .querySelector('.s-item__location')
+        .textContent.slice(5);
 
       results.push({
         title,
         price,
         image,
         link,
+        location,
       });
     }
   });
