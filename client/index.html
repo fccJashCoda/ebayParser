@@ -30,7 +30,7 @@
           </fieldset>
           <button type="submit" class="btn btn-success">Add Search term</button>
         </form>
-        <section class="mt-2">
+        <section class="mt-2 d-flex flex-row justify-content-between">
           <ul class="nav nav-tabs">
             <li
               v-for="term in terms"
@@ -45,6 +45,7 @@
               >
             </li>
           </ul>
+          <button @click="clearTerms" class="btn btn-warning">Clear</button>
         </section>
         <section class="container">
           <div v-if="loading" class="col-span-12">
