@@ -11,6 +11,12 @@ const { JSDOM } = jsdom;
 app.use(cors());
 app.use(morgan('tiny'));
 
+// improving the cache:
+// transform the cache in an array of objects
+// eache object has a search term, a date, and results
+// when a search query is done, we first check if the term is in the array and
+// if the data is fresh enough not to be refetched
+// if refetched, update the item in the cache array
 const cache = {
   search_term: '',
   date: 0,

@@ -8,6 +8,7 @@ const app = new Vue({
     terms: [],
     activeTerm: null,
     activeResults: [],
+    loading: false,
   },
   methods: {
     addTerm() {
@@ -17,14 +18,17 @@ const app = new Vue({
       }
     },
     setActiveTerm(term) {
+      this.loading = true;
       this.activeTerm = term;
       const url = `${API_URL}${term}`;
       console.log(url);
       fetch(url)
         .then((res) => res.json())
         .then((data) => {
-          this.activeREsults = data.results;
-          console.log(data.results);
+          this.activeResults = data.results;
+          setTimeout(() => {
+            this.loading = false;
+          }, 3000);
         });
     },
   },

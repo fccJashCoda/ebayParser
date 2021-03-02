@@ -46,23 +46,35 @@
             </li>
           </ul>
         </section>
-        <section>
-          <div
-            v-for="result in activeResults"
-            class="card mb-3"
-            style="max-width: 540px"
-          >
-            <div class="row g-0">
-              <div class="col-md-4">
-                <img v-bind:src="result.image" />
-              </div>
-              <div class="col-md-8">
-                <div class="card-body">
-                  <h5 class="card-title">{{ result.title }}</h5>
-                  <p class="card-text">$ {{ result.price}}</p>
-                  <p class="card-text"><small class="text-muted"></small></p>
-                  <a v-bind:href="result.link">To Item</a>
-                </div>
+        <section class="container">
+          <div v-if="loading" class="col-span-12">
+            <img
+              src="https://media.giphy.com/media/322Gg7gspi2HlkuqD8/giphy.gif"
+              alt=""
+              class="d-block mx-auto"
+            />
+          </div>
+          <div v-else class="row row-cols-4 p-3">
+            <div
+              v-for="result in activeResults"
+              class="card"
+              style="max-width: 18rem"
+            >
+              <img
+                v-if="result.image"
+                :src="result.image"
+                class="card-image-top"
+              />
+              <img
+                v-else
+                src="http://placekitten.com/200/300"
+                class="card-image-top"
+              />
+              <div class="card-body">
+                <h5 class="card-title">{{ result.title }}</h5>
+                <p class="card-text">{{ result.price}}</p>
+                <p class="card-text"><small class="text-muted"></small></p>
+                <a :href="result.link" class="btn btn-primary">To Item</a>
               </div>
             </div>
           </div>
