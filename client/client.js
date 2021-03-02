@@ -1,5 +1,5 @@
 const API_URL = 'http://localhost:3100/search/';
-const API_TEST = 'http://localhost:3100';
+// const API_TEST = 'http://localhost:3100';
 
 const app = new Vue({
   el: '#app',
@@ -7,6 +7,7 @@ const app = new Vue({
     term: '',
     terms: [],
     activeTerm: null,
+    activeResults: [],
   },
   methods: {
     addTerm() {
@@ -18,10 +19,9 @@ const app = new Vue({
     setActiveTerm(term) {
       this.activeTerm = term;
       const url = `${API_URL}${term}`;
-      console.log(url);
-      fetch(API_TEST)
+      fetch(url)
         .then((res) => res.json())
-        .then((data) => console.log(data));
+        .then((data) => (this.activeREsults = data.results));
     },
   },
 });

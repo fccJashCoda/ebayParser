@@ -25,22 +25,34 @@ function getResults(body) {
 
   rows.forEach((element) => {
     if (element) {
-      const title = element
-        .querySelector('h3.s-item__title')
-        .textContent.slice(11);
-      const price = element.querySelector('.s-item__price').textContent;
-      const link = element.querySelector('.s-item__link').href;
-      const image = element.querySelector('.s-item__image-img').src;
-      const location = element
-        .querySelector('.s-item__location')
-        .textContent.slice(5);
+      let title = element.querySelector('h3.s-item__title');
+      // .textContent.slice(11);
+      let price = element.querySelector('.s-item__price');
+      // .textContent;
+      let link = element.querySelector('.s-item__link');
+      // .href;
+      let image = element.querySelector('.s-item__image-img');
+      // .src;
+
+      if (title) {
+        // console.log(title);
+        title = title.textContent.slice(11);
+      }
+      if (price) {
+        price = price.textContent;
+      }
+      if (image) {
+        image = image.src;
+      }
+      if (link) {
+        link = link.href;
+      }
 
       results.push({
-        title,
-        price,
-        image,
-        link,
-        location,
+        title: title || '',
+        price: price || '',
+        image: image || '',
+        link: link || '',
       });
     }
   });
