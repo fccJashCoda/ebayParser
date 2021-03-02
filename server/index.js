@@ -26,16 +26,11 @@ function getResults(body) {
   rows.forEach((element) => {
     if (element) {
       let title = element.querySelector('h3.s-item__title');
-      // .textContent.slice(11);
       let price = element.querySelector('.s-item__price');
-      // .textContent;
       let link = element.querySelector('.s-item__link');
-      // .href;
       let image = element.querySelector('.s-item__image-img');
-      // .src;
 
       if (title) {
-        // console.log(title);
         title = title.textContent.slice(11);
       }
       if (price) {
@@ -47,6 +42,8 @@ function getResults(body) {
       if (link) {
         link = link.href;
       }
+
+      if (!title) return;
 
       results.push({
         title: title || '',

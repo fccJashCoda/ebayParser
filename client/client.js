@@ -19,9 +19,13 @@ const app = new Vue({
     setActiveTerm(term) {
       this.activeTerm = term;
       const url = `${API_URL}${term}`;
+      console.log(url);
       fetch(url)
         .then((res) => res.json())
-        .then((data) => (this.activeREsults = data.results));
+        .then((data) => {
+          this.activeREsults = data.results;
+          console.log(data.results);
+        });
     },
   },
 });
