@@ -11,12 +11,9 @@ const { JSDOM } = jsdom;
 app.use(cors());
 app.use(morgan('tiny'));
 
-// improving the cache:
-// transform the cache in an array of objects
-// eache object has a search term, a date, and results
-// when a search query is done, we first check if the term is in the array and
-// if the data is fresh enough not to be refetched
-// if refetched, update the item in the cache array
+const cachedTerms = new Set();
+const cacheBeta = {};
+
 const cache = {
   search_term: '',
   date: 0,
@@ -88,6 +85,39 @@ app.get('/search/:search_term', (req, res) => {
         cache.date = date;
         cache.body = body;
         cache.results = results;
+
+        res.json({
+          results,
+        });
+      });
+  }
+});
+
+app.get('/search/v2/:search_term', (req, res) => {
+  const { search_term } = req.params;
+  const url = `https://www.ebay.com/sch/i.html?_from=R40&_nkw=${search_term}&_sacat=0&LH_TitleDesc=0&_sop=10`;
+
+  if (
+    cachedTerms.has(search_term) &&
+    new Date().getTime() - 1200 * 1000 < cacheBeta[search_term].epoch
+  ) {
+    console.log('serving cached data');
+    res.json({
+      results: cacheBeta[search_term].results,
+    });
+  } else {
+    console.log('fetching fresh data');
+    fetch(url)
+      .then((response) => response.text())
+      .then(async (body) => {
+        const results = getResults(body);
+
+        cachedTerms.add(search_term);
+        cacheBeta[search_term] = {
+          searchTerm: search_term,
+          results: results,
+          epoch: new Date().getTime(),
+        };
 
         res.json({
           results,
