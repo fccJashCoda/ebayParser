@@ -1,4 +1,5 @@
-const API_URL = 'http://localhost:3100/search/';
+// const API_URL = 'http://localhost:3100/search/';
+const API_URL = 'http://localhost:3100/search/v2/';
 
 const app = new Vue({
   el: '#app',
